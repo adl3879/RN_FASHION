@@ -1,9 +1,14 @@
+import Header from "../../components/Header";
 import { Box, Text } from "../../components/Theme";
 
 const OutfitIdeas = () => {
   return (
-    <Box bg="danger" height={3000}>
-      <Text color="danger">Hello world!</Text>
+    <Box flex={1} backgroundColor="white">
+      <Header
+        title="Outfit Ideas"
+        left={{ icon: "menu", onPress: () => true }}
+        right={{ icon: "shopping-bag", onPress: () => true }}
+      />
     </Box>
   );
 };

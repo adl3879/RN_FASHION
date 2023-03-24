@@ -1,8 +1,6 @@
 import { useTheme } from "@shopify/restyle";
-import { Dimensions, Image, StyleSheet } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { Dimensions, Image } from "react-native";
 import Header from "../../components/Header";
-import RoundedIconButton from "../../components/RoundedIconButton";
 import { Box, Position, Text, Theme } from "../../components/Theme";
 import DrawerItem, { DrawerItemProps } from "./DrawerItem";
 
@@ -53,7 +51,6 @@ const items: DrawerItemProps[] = [
 ];
 
 const Drawer = () => {
-  const insets = useSafeAreaInsets();
   const theme = useTheme<Theme>();
 
   return (

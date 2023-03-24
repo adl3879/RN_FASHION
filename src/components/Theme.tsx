@@ -66,6 +66,12 @@ const theme = createTheme({
       color: "button",
     },
     defaults: {},
+    header: {
+      fontSize: 12,
+      lineHeight: 24,
+      fontFamily: "SFProText-Semibold",
+      color: "secondary",
+    },
   },
 });
 

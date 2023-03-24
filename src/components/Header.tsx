@@ -19,7 +19,13 @@ const Header = ({ title, left, right }: HeaderProps) => {
   const insets = useSafeAreaInsets();
 
   return (
-    <Box flexDirection="row">
+    <Box
+      flexDirection="row"
+      style={{ marginTop: insets.top }}
+      justifyContent="space-between"
+      alignItems="center"
+      paddingHorizontal="m"
+    >
       <RoundedIconButton
         name={left.icon}
         color="white"
@@ -27,7 +33,9 @@ const Header = ({ title, left, right }: HeaderProps) => {
         size={25}
         onPress={left.onPress}
       />
-      <Text color="white">{title}</Text>
+      <Text variant="header" color="white">
+        {title}
+      </Text>
       <RoundedIconButton
         name={right.icon}
         color="white"

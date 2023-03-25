@@ -13,6 +13,7 @@ const theme = createTheme({
     body: "rgba(12, 13, 52, 0.7)",
     white: "#FFFFFF",
     grey: "rgba(12, 13, 52, 0.05)",
+    greyLight: "#FAFAFA",
     slideGrey: "#F2F2F2",
     button: "#0C0D34",
     danger: "red",

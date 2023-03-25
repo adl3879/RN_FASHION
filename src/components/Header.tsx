@@ -13,10 +13,13 @@ interface HeaderProps {
     icon: keyof typeof Icon.glyphMap;
     onPress: () => void;
   };
+  dark?: boolean;
 }
 
-const Header = ({ title, left, right }: HeaderProps) => {
+const Header = ({ title, left, right, dark }: HeaderProps) => {
   const insets = useSafeAreaInsets();
+  const color = dark ? "white" : "secondary";
+  const backgroundColor = dark ? "secondary" : "white";
 
   return (
     <Box
@@ -28,20 +31,18 @@ const Header = ({ title, left, right }: HeaderProps) => {
     >
       <RoundedIconButton
         name={left.icon}
-        color="white"
-        backgroundColor="secondary"
         size={25}
         onPress={left.onPress}
+        {...{ color, backgroundColor }}
       />
-      <Text variant="header" color="white">
+      <Text variant="header" {...{ color }}>
         {title}
       </Text>
       <RoundedIconButton
         name={right.icon}
-        color="white"
-        backgroundColor="secondary"
         size={25}
         onPress={right.onPress}
+        {...{ color, backgroundColor }}
       />
     </Box>
   );

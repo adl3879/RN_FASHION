@@ -1,5 +1,5 @@
 import Header from "../../components/Header";
-import { Box, Text } from "../../components/Theme";
+import { Box } from "../../components/Theme";
 
 const OutfitIdeas = () => {
   return (
@@ -8,6 +8,7 @@ const OutfitIdeas = () => {
         title="Outfit Ideas"
         left={{ icon: "menu", onPress: () => true }}
         right={{ icon: "shopping-bag", onPress: () => true }}
+        dark
       />
     </Box>
   );

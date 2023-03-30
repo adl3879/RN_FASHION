@@ -23,6 +23,7 @@ const theme = createTheme({
     orange: "#FE5E33",
     violet: "#442CB9",
     pink: "#FF87A2",
+    lightBlue: "#BFEAF5",
   },
   spacing: {
     s: 8,

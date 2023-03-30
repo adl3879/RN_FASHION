@@ -1,8 +1,9 @@
 {
   "expo": {
-    "name": "season5",
-    "slug": "season5",
+    "name": "rn_fashion",
+    "slug": "rn_fashion",
     "version": "1.0.0",
+    "jsEngine": "hermes",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -25,12 +26,18 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF",
         "softwareKeyboardlayoutMode": "pan"
-      }
+      },
+      "package": "com.adeleye.rn_fashion"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "sdkVersion": "47.0.0"
+    "sdkVersion": "47.0.0",
+    "extra": {
+      "eas": {
+        "projectId": "2c0b8c24-3815-4def-9cdb-4bf7c4189898"
+      }
+    }
   },
-  "name": "season5"
+  "name": "rn_fashion"
 }

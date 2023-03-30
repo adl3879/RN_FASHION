@@ -1,5 +1,6 @@
 import { useTheme } from "@shopify/restyle";
 import { Dimensions, Image } from "react-native";
+import type { HomeNavigationProps } from "../../../Routes";
 import Header from "../../components/Header";
 import { Box, Position, Text, Theme } from "../../components/Theme";
 import DrawerItem, { DrawerItemProps } from "./DrawerItem";
@@ -50,7 +51,7 @@ const items: DrawerItemProps[] = [
   },
 ];
 
-const Drawer = () => {
+const Drawer = ({ navigation }: HomeNavigationProps<"OutfitIdeas">) => {
   const theme = useTheme<Theme>();
 
   return (
@@ -63,8 +64,9 @@ const Drawer = () => {
         >
           <Header
             title="MY PROFILE"
-            left={{ icon: "x", onPress: () => true }}
+            left={{ icon: "x", onPress: () => navigation.closeDrawer() }}
             right={{ icon: "shopping-bag", onPress: () => true }}
+            dark
           />
         </Box>
       </Box>
@@ -110,7 +112,6 @@ const Drawer = () => {
             height,
             borderTopLeftRadius: theme.borderRadii.xl,
           }}
-          // borderTopLeftRadius="xl"
         />
       </Box>
     </Box>

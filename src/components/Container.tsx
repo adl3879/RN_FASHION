@@ -24,7 +24,6 @@ interface ContainerProps {
 const Container = ({ children, footer, pattern = 0 }: ContainerProps) => {
   const theme = useTheme();
   const asset = assets[pattern];
-  console.log(Constants.statusBarHeight);
 
   return (
     <KeyboardAwareScrollView scrollEnabled={false}>

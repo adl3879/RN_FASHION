@@ -3,9 +3,13 @@ import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import Animated, {
   interpolate,
   interpolateColor,
+  runOnJS,
   useAnimatedStyle,
+  useDerivedValue,
   useSharedValue,
+  withDelay,
   withSpring,
+  withTiming,
 } from "react-native-reanimated";
 import { Box } from "../../components/Theme";
 
@@ -20,36 +24,41 @@ interface CardProps {
 }
 
 const Card = ({ position, onSwipe }: CardProps) => {
-  const pos = useSharedValue(position);
   const isPressed = useSharedValue(false);
   const offset = useSharedValue({ x: 0, y: 0 });
+
+  const cardPosition = useDerivedValue(() => {
+    return withDelay(300, withTiming(position, { duration: 200 }));
+  }, [position]);
 
   const gesture = Gesture.Pan()
     .onBegin(() => {})
     .onUpdate((e) => {
+      offset.value = { x: e.translationX, y: e.translationY };
       isPressed.value = true;
-      offset.value = {
-        x: e.translationX,
-        y: e.translationY,
-      };
     })
-    .onEnd(() => {})
+    .onEnd((e) => {
+      if (e.translationX > 200 || e.translationX < -200) {
+        runOnJS(onSwipe)();
+      }
+      offset.value = { x: 0, y: 0 };
+    })
     .onFinalize(() => {
       isPressed.value = false;
     });
 
   const animatedTransform = useAnimatedStyle(() => {
-    const scale = interpolate(pos.value, [0, 1], [1, 0.9]);
-    const translateY = interpolate(pos.value, [0, 1], [0, -50]);
-    const translateX = isPressed.value
-      ? withSpring(offset.value.x, {
+    const scale = interpolate(cardPosition.value, [0, 1], [1, 0.9]);
+    const translateY = !isPressed.value
+      ? withSpring(interpolate(cardPosition.value, [0, 1], [0, -50]), {
           damping: 10,
-          velocity: 1200,
         })
-      : withSpring(pos.value, {
-          damping: 10,
-          velocity: 0,
-        });
+      : offset.value.y > 0
+      ? withSpring(offset.value.y, { damping: 10, velocity: offset.value.y })
+      : 0;
+    const translateX = isPressed.value
+      ? withSpring(offset.value.x, { damping: 10, velocity: offset.value.x })
+      : withSpring(0, { damping: 10 });
 
     return {
       transform: [{ scale }, { translateY }, { translateX }],
@@ -59,7 +68,7 @@ const Card = ({ position, onSwipe }: CardProps) => {
   const animatedBackgroundColor = useAnimatedStyle(() => {
     return {
       backgroundColor: interpolateColor(
-        pos.value,
+        cardPosition.value,
         [0, 1],
         ["#C9E9E7", "#74BCB8"]
       ),

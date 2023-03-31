@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { interpolate } from "react-native-reanimated";
 import type { HomeNavigationProps } from "../../../Routes";
 import Header from "../../components/Header";
 import { Box } from "../../components/Theme";
@@ -21,6 +20,8 @@ const cards = [
   },
 ];
 
+const step = 1 / (cards.length - 1);
+
 const OutfitIdeas = ({ navigation }: HomeNavigationProps<"OutfitIdeas">) => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -35,15 +36,11 @@ const OutfitIdeas = ({ navigation }: HomeNavigationProps<"OutfitIdeas">) => {
         <Background />
         {cards.map(
           ({ index }) =>
-            index >= currentIndex && (
+            currentIndex < index * step + step && (
               <Card
                 key={index}
-                position={interpolate(
-                  index,
-                  [currentIndex, cards.length - 1],
-                  [0, 1]
-                )}
-                onSwipe={() => setCurrentIndex((prev) => prev + 1)}
+                position={index * step - currentIndex}
+                onSwipe={() => setCurrentIndex((prev) => prev + step)}
               />
             )
         )}

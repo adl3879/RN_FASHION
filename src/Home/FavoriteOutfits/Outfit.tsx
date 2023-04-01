@@ -1,30 +1,38 @@
 import { useTheme } from "@shopify/restyle";
 import { useState } from "react";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { TouchableOpacity } from "react-native";
 import RoundedIcon from "../../components/RoundedIcon";
 import { Box, type Theme } from "../../components/Theme";
 
-export interface OutfitProps {
-  color: string;
-  aspectRatio: number;
-  id: number;
+export type OutfitProps = {
+  outfit: {
+    color: string;
+    aspectRatio: number;
+    id: number;
+    selected: boolean;
+  };
   width: number;
-}
+};
 
-const Outfit = ({ aspectRatio, color, width }: OutfitProps) => {
+const Outfit = ({ outfit, width }: OutfitProps) => {
   const theme = useTheme<Theme>();
   const [selected, setSelected] = useState(false);
 
+  const handlePress = () => {
+    setSelected((prev) => !prev);
+    outfit.selected = !outfit.selected;
+  };
+
   return (
-    <TouchableOpacity onPress={() => setSelected((prev) => !prev)}>
+    <TouchableOpacity onPress={handlePress}>
       <Box
         width={width}
-        height={width * aspectRatio - theme.spacing.m}
+        height={width * outfit.aspectRatio - theme.spacing.m}
         marginBottom="m"
         borderRadius="m"
         alignItems="flex-end"
         padding="m"
-        style={{ backgroundColor: color }}
+        style={{ backgroundColor: outfit.color }}
       >
         {selected && (
           <RoundedIcon

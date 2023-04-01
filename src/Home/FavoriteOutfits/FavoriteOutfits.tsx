@@ -1,12 +1,12 @@
 import { useTheme } from "@shopify/restyle";
 import { useState } from "react";
 import { Dimensions, ScrollView } from "react-native";
-import Animated, { SlideInDown } from "react-native-reanimated";
 import type { HomeNavigationProps } from "../../../Routes";
 import Header from "../../components/Header";
 import { Box, type Theme } from "../../components/Theme";
 import Footer from "./Footer";
 import Outfit, { OutfitProps } from "./Outfit";
+import TopCurve from "./TopCurve";
 
 const { width: wWidth } = Dimensions.get("window");
 
@@ -87,22 +87,18 @@ const FavoriteOutfits = ({
         >
           <Box flexDirection="row">
             <Box marginRight="m">
-              <Animated.View layout={SlideInDown.duration(500)}>
-                {outfits
-                  .filter(({ id }) => id % 2 !== 0)
-                  .map((outfit) => (
-                    <Outfit key={outfit.id} width={width} {...{ outfit }} />
-                  ))}
-              </Animated.View>
+              {outfits
+                .filter(({ id }) => id % 2 !== 0)
+                .map((outfit) => (
+                  <Outfit key={outfit.id} width={width} {...{ outfit }} />
+                ))}
             </Box>
             <Box>
-              <Animated.View layout={SlideInDown.duration(500)}>
-                {outfits
-                  .filter(({ id }) => id % 2 === 0)
-                  .map((outfit) => (
-                    <Outfit key={outfit.id} width={width} {...{ outfit }} />
-                  ))}
-              </Animated.View>
+              {outfits
+                .filter(({ id }) => id % 2 === 0)
+                .map((outfit) => (
+                  <Outfit key={outfit.id} width={width} {...{ outfit }} />
+                ))}
             </Box>
           </Box>
         </ScrollView>
@@ -117,10 +113,13 @@ const FavoriteOutfits = ({
             },
           }) => setFooterHeight(height)}
         >
+          <TopCurve {...{ footerHeight }} />
           <Footer
             label="Add more to favorites"
             onPress={() => {
-              setOutfits(outfits.filter((outfit) => !outfit.selected));
+              setOutfits((currentOutfits) =>
+                currentOutfits.filter((outfit) => !outfit.selected)
+              );
             }}
           />
         </Box>

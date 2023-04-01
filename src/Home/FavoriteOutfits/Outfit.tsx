@@ -1,6 +1,7 @@
 import { useTheme } from "@shopify/restyle";
 import { useState } from "react";
 import { TouchableOpacity } from "react-native";
+import Animated, { FadeOut, Layout } from "react-native-reanimated";
 import RoundedIcon from "../../components/RoundedIcon";
 import { Box, type Theme } from "../../components/Theme";
 
@@ -24,26 +25,32 @@ const Outfit = ({ outfit, width }: OutfitProps) => {
   };
 
   return (
-    <TouchableOpacity onPress={handlePress}>
-      <Box
-        width={width}
-        height={width * outfit.aspectRatio - theme.spacing.m}
-        marginBottom="m"
-        borderRadius="m"
-        alignItems="flex-end"
-        padding="m"
-        style={{ backgroundColor: outfit.color }}
-      >
-        {selected && (
-          <RoundedIcon
-            name="check"
-            size={24}
-            color="white"
-            backgroundColor="primary"
-          />
-        )}
-      </Box>
-    </TouchableOpacity>
+    <Animated.View
+      key={outfit.id}
+      layout={Layout.delay(200).duration(400)}
+      exiting={FadeOut}
+    >
+      <TouchableOpacity onPress={handlePress}>
+        <Box
+          width={width}
+          height={width * outfit.aspectRatio - theme.spacing.m}
+          marginBottom="m"
+          borderRadius="m"
+          alignItems="flex-end"
+          padding="m"
+          style={{ backgroundColor: outfit.color }}
+        >
+          {selected && (
+            <RoundedIcon
+              name="check"
+              size={24}
+              color="white"
+              backgroundColor="primary"
+            />
+          )}
+        </Box>
+      </TouchableOpacity>
+    </Animated.View>
   );
 };
 

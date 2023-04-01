@@ -12,7 +12,7 @@ const height = DRAWER_WIDTH * aspectRatio;
 
 const assets = [require("./assets/drawer.png")];
 
-const items: DrawerItemProps[] = [
+const items: Omit<DrawerItemProps, "onPress">[] = [
   {
     icon: "zap",
     label: "Outfit Ideas",
@@ -100,7 +100,11 @@ const Drawer = ({ navigation }: HomeNavigationProps<"OutfitIdeas">) => {
             </Text>
           </Box>
           {items.map((item) => (
-            <DrawerItem key={item.screen} {...item} />
+            <DrawerItem
+              key={item.screen}
+              onPress={() => navigation.navigate(item.screen)}
+              {...item}
+            />
           ))}
         </Box>
       </Box>

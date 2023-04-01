@@ -3,19 +3,21 @@ import RoundedIcon from "../../components/RoundedIcon";
 import { Box, Theme, Text } from "../../components/Theme";
 import type { Feather as Icon } from "@expo/vector-icons";
 import { useTheme } from "@shopify/restyle";
+import type { HomeRoutes } from "../../../Routes";
 
 export interface DrawerItemProps {
   icon: keyof typeof Icon.glyphMap;
   label: string;
-  screen: string;
+  screen: keyof HomeRoutes;
   color: keyof Theme["colors"];
+  onPress: () => void;
 }
 
-const DrawerItem = ({ icon, label, screen, color }: DrawerItemProps) => {
+const DrawerItem = ({ icon, label, color, onPress }: DrawerItemProps) => {
   const theme = useTheme<Theme>();
 
   return (
-    <RectButton style={{ borderRadius: theme.borderRadii.m }}>
+    <RectButton style={{ borderRadius: theme.borderRadii.m }} {...{ onPress }}>
       <Box flexDirection="row" alignItems="center" p="m">
         <RoundedIcon
           name={icon}

@@ -24,7 +24,7 @@ interface CardProps {
 }
 
 const Card = ({ position, onSwipe }: CardProps) => {
-  const isPressed = useSharedValue(false);
+  const isSwiped = useSharedValue(false);
   const offset = useSharedValue({ x: 0, y: 0 });
 
   const cardPosition = useDerivedValue(() => {
@@ -32,10 +32,9 @@ const Card = ({ position, onSwipe }: CardProps) => {
   }, [position]);
 
   const gesture = Gesture.Pan()
-    .onBegin(() => {})
     .onUpdate((e) => {
       offset.value = { x: e.translationX, y: e.translationY };
-      isPressed.value = true;
+      isSwiped.value = true;
     })
     .onEnd((e) => {
       if (e.translationX > 200 || e.translationX < -200) {
@@ -44,19 +43,19 @@ const Card = ({ position, onSwipe }: CardProps) => {
       offset.value = { x: 0, y: 0 };
     })
     .onFinalize(() => {
-      isPressed.value = false;
+      isSwiped.value = false;
     });
 
   const animatedTransform = useAnimatedStyle(() => {
     const scale = interpolate(cardPosition.value, [0, 1], [1, 0.9]);
-    const translateY = !isPressed.value
+    const translateY = !isSwiped.value
       ? withSpring(interpolate(cardPosition.value, [0, 1], [0, -50]), {
           damping: 10,
         })
       : offset.value.y > 0
       ? withSpring(offset.value.y, { damping: 10, velocity: offset.value.y })
       : 0;
-    const translateX = isPressed.value
+    const translateX = isSwiped.value
       ? withSpring(offset.value.x, { damping: 10, velocity: offset.value.x })
       : withSpring(0, { damping: 10 });
 

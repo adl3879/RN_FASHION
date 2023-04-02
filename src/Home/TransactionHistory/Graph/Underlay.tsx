@@ -1,8 +1,8 @@
 import { useTheme } from "@shopify/restyle";
+import moment from "moment";
 import { StyleSheet } from "react-native";
 import { Box, Text, type Theme } from "../../../components/Theme";
 
-const formatter = new Intl.DateTimeFormat("en-US", { month: "short" });
 const lerp = (a: number, b: number, t: number) => {
   return a * (1 - t) + b * t;
 };
@@ -11,14 +11,22 @@ export const MARGIN = "xl";
 const ROW_HEIGHT = 16;
 
 interface UnderlayProps {
-  dates: number[];
   minY: number;
   maxY: number;
   step: number;
+  startDate: number;
+  numberOfMonths: number;
 }
 
-const Underlay = ({ dates, minY, maxY, step }: UnderlayProps) => {
+const Underlay = ({
+  minY,
+  maxY,
+  step,
+  startDate,
+  numberOfMonths,
+}: UnderlayProps) => {
   const theme = useTheme<Theme>();
+  const minDate = moment(startDate);
 
   return (
     <Box style={StyleSheet.absoluteFill}>
@@ -46,13 +54,16 @@ const Underlay = ({ dates, minY, maxY, step }: UnderlayProps) => {
         flexDirection="row"
         alignItems="center"
       >
-        {dates.map((date, index) => (
-          <Box key={index} width={step}>
-            <Text color="darkGrey" textAlign="center">
-              {formatter.format(new Date(date))}
-            </Text>
-          </Box>
-        ))}
+        {new Array(numberOfMonths)
+          .fill(0)
+          .map((_, i) => minDate.clone().add(i, "month"))
+          .map((date, index) => (
+            <Box key={index} width={step}>
+              <Text color="darkGrey" textAlign="center">
+                {date.format("MMM")}
+              </Text>
+            </Box>
+          ))}
       </Box>
     </Box>
   );

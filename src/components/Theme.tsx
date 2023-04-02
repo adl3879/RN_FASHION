@@ -54,6 +54,12 @@ const theme = createTheme({
     },
     title2: {
       fontSize: 24,
+      lineHeight: 30,
+      fontFamily: "SFProText-Semibold",
+      color: "secondary",
+    },
+    title3: {
+      fontSize: 16,
       fontFamily: "SFProText-Semibold",
       color: "secondary",
     },
@@ -65,7 +71,7 @@ const theme = createTheme({
     },
     button: {
       fontSize: 15,
-      fontFamily: "SFProText-Regular",
+      fontFamily: "SFProText-Semibold",
       color: "button",
     },
     defaults: {},
@@ -80,7 +86,6 @@ const theme = createTheme({
 
 export type Theme = typeof theme;
 
-export const Box = createBox<Theme>();
 export const Position = {
   absoluteFillObject: {
     position: "absolute",
@@ -94,4 +99,5 @@ export const Position = {
 };
 export const Text = createText<Theme>();
 
+export const Box = createBox<Theme>();
 export default theme;

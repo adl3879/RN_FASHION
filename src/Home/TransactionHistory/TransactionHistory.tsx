@@ -1,40 +1,33 @@
+import { ScrollView } from "react-native";
 import type { HomeNavigationProps } from "../../../Routes";
 import Header from "../../components/Header";
 import { Box, Text } from "../../components/Theme";
-import type { Point } from "./Graph/Graph";
+import type { DataPoint } from "./Graph/Graph";
 import Graph from "./Graph/Graph";
+import Transaction from "./Transaction";
 
-const data: Point[] = [
+const startDate = new Date("2020-09-01").getTime();
+const numberOfMonths = 7;
+
+const data: DataPoint[] = [
   {
-    date: new Date("2020-10-01").getTime(),
-    value: 0,
-  },
-  {
-    date: new Date("2020-11-02").getTime(),
-    value: 0,
-  },
-  {
-    date: new Date("2020-12-03").getTime(),
+    date: new Date("2020-10-03").getTime(),
     value: 139.42,
     color: "primary",
+    id: 243671,
   },
   {
-    date: new Date("2021-01-04").getTime(),
+    date: new Date("2020-11-04").getTime(),
     value: 280,
     color: "orange",
+    id: 243672,
   },
+
   {
-    date: new Date("2021-02-05").getTime(),
-    value: 0,
-  },
-  {
-    date: new Date("2021-03-06").getTime(),
+    date: new Date("2021-02-06").getTime(),
     value: 200,
     color: "yellow",
-  },
-  {
-    date: new Date("2021-04-07").getTime(),
-    value: 0,
+    id: 243673,
   },
 ];
 
@@ -49,7 +42,7 @@ const TransactionHistory = ({
         right={{ icon: "share", onPress: () => true }}
       />
 
-      <Box padding="m">
+      <Box padding="m" flex={1}>
         <Box
           flexDirection="row"
           justifyContent="space-between"
@@ -65,7 +58,12 @@ const TransactionHistory = ({
             <Text color="primary">All Time</Text>
           </Box>
         </Box>
-        <Graph {...{ data }} />
+        <Graph {...{ data, startDate, numberOfMonths }} />
+        <ScrollView>
+          {data.map((transaction) => (
+            <Transaction key={transaction.id} {...{ transaction }} />
+          ))}
+        </ScrollView>
       </Box>
     </Box>
   );

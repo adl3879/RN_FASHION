@@ -1,4 +1,5 @@
 import { useTheme } from "@shopify/restyle";
+import moment from "moment";
 import { Dimensions } from "react-native";
 import { Box, type Theme } from "../../../components/Theme";
 import Underlay, { MARGIN } from "./Underlay";
@@ -10,38 +11,41 @@ const lerp = (a: number, b: number, t: number) => {
   return a * (1 - t) + b * t;
 };
 
-export interface Point {
+export interface DataPoint {
   date: number;
   value: number;
   color?: keyof Theme["colors"];
+  id?: number;
 }
 
 interface GraphProps {
-  data: Point[];
+  data: DataPoint[];
+  startDate: number;
+  numberOfMonths: number;
 }
 
-const Graph = ({ data }: GraphProps) => {
+const Graph = ({ data, startDate, numberOfMonths }: GraphProps) => {
   const theme = useTheme<Theme>();
   const canvasWidth = wWidth - theme.spacing.m * 2;
   const canvasHeight = canvasWidth * aspectRatio;
   const width = canvasWidth - theme.spacing.l;
   const height = canvasHeight - theme.spacing.l;
-  const step = width / data.length;
+
+  const step = width / numberOfMonths;
   const values = data.map((point) => point.value);
-  const dates = data.map((point) => point.date);
   const maxY = Math.max(...values);
   const minY = Math.min(...values);
 
   return (
     <Box paddingBottom="l" paddingLeft="l" marginTop={MARGIN}>
-      <Underlay {...{ dates, maxY, minY, step }} />
+      <Underlay {...{ minY, maxY, startDate, numberOfMonths, step }} />
       <Box {...{ width, height }}>
-        {data.map((point, index) => {
-          if (point.value === 0) return null;
+        {data.map((point) => {
+          const index = moment(point.date).diff(startDate, "month");
 
           return (
             <Box
-              key={point.date}
+              key={point.id}
               position="absolute"
               left={index * step}
               bottom={0}

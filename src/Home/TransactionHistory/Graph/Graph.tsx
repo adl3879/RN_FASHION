@@ -1,6 +1,7 @@
 import { useTheme } from "@shopify/restyle";
 import moment from "moment";
-import { Dimensions } from "react-native";
+import { Dimensions, View } from "react-native";
+import Animated, { Easing, Layout, withTiming } from "react-native-reanimated";
 import { Box, type Theme } from "../../../components/Theme";
 import Underlay, { MARGIN } from "./Underlay";
 
@@ -10,6 +11,8 @@ const aspectRatio = 195 / 305;
 const lerp = (a: number, b: number, t: number) => {
   return a * (1 - t) + b * t;
 };
+
+const AnimatedBox = Animated.createAnimatedComponent(Box);
 
 export interface DataPoint {
   date: number;
@@ -36,6 +39,25 @@ const Graph = ({ data, startDate, numberOfMonths }: GraphProps) => {
   const maxY = Math.max(...values);
   const minY = Math.min(...values);
 
+  const entering = (targetValues: any) => {
+    "worklet";
+    const animations = {
+      originY: withTiming(targetValues.originY, {
+        duration: 5000,
+        easing: Easing.inOut(Easing.ease),
+      }),
+      opacity: withTiming(1, { duration: 2000, easing: Easing.ease }),
+    };
+    const initialValues = {
+      originY: height,
+      opacity: 0.5,
+    };
+    return {
+      initialValues,
+      animations,
+    };
+  };
+
   return (
     <Box paddingBottom="l" paddingLeft="l" marginTop={MARGIN}>
       <Underlay {...{ minY, maxY, startDate, numberOfMonths, step }} />
@@ -44,13 +66,16 @@ const Graph = ({ data, startDate, numberOfMonths }: GraphProps) => {
           const index = moment(point.date).diff(startDate, "month");
 
           return (
-            <Box
+            <AnimatedBox
               key={point.id}
+              layout={Layout}
+              entering={entering}
               position="absolute"
               left={index * step}
               bottom={0}
               width={step}
               height={lerp(0, height, point.value / maxY)}
+              overflow="hidden"
             >
               <Box
                 position="absolute"
@@ -72,7 +97,7 @@ const Graph = ({ data, startDate, numberOfMonths }: GraphProps) => {
                 borderRadius="m"
                 backgroundColor={point.color || "primary"}
               />
-            </Box>
+            </AnimatedBox>
           );
         })}
       </Box>

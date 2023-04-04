@@ -1,3 +1,4 @@
+import { CommonActions } from "@react-navigation/native";
 import { useTheme } from "@shopify/restyle";
 import { Dimensions, Image } from "react-native";
 import type { HomeNavigationProps } from "../../../Routes";
@@ -12,7 +13,7 @@ const height = DRAWER_WIDTH * aspectRatio;
 
 const assets = [require("./assets/drawer.png")];
 
-const items: Omit<DrawerItemProps, "onPress">[] = [
+const items: DrawerItemProps[] = [
   {
     icon: "zap",
     label: "Outfit Ideas",
@@ -46,7 +47,13 @@ const items: Omit<DrawerItemProps, "onPress">[] = [
   {
     icon: "log-out",
     label: "Logout",
-    screen: "Logout",
+    onPress: (navigation) =>
+      navigation.dispatch(
+        CommonActions.reset({
+          index: 0,
+          routes: [{ name: "Authentication" }],
+        })
+      ),
     color: "secondary",
   },
 ];
@@ -99,12 +106,8 @@ const Drawer = ({ navigation }: HomeNavigationProps<"OutfitIdeas">) => {
               mike@flexinstudio.com
             </Text>
           </Box>
-          {items.map((item) => (
-            <DrawerItem
-              key={item.screen}
-              onPress={() => navigation.navigate(item.screen)}
-              {...item}
-            />
+          {items.map((item, index) => (
+            <DrawerItem key={index} {...item} />
           ))}
         </Box>
       </Box>

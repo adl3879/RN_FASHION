@@ -1,23 +1,41 @@
-import { RectButton } from "react-native-gesture-handler";
-import RoundedIcon from "../../components/RoundedIcon";
-import { Box, Theme, Text } from "../../components/Theme";
 import type { Feather as Icon } from "@expo/vector-icons";
+import type { DrawerNavigationProp } from "@react-navigation/drawer";
+import { useNavigation } from "@react-navigation/native";
 import { useTheme } from "@shopify/restyle";
+import { RectButton } from "react-native-gesture-handler";
 import type { HomeRoutes } from "../../../Routes";
+import RoundedIcon from "../../components/RoundedIcon";
+import { Box, Text, Theme } from "../../components/Theme";
 
-export interface DrawerItemProps {
+interface BaseDrawerItem {
   icon: keyof typeof Icon.glyphMap;
   label: string;
-  screen: keyof HomeRoutes;
   color: keyof Theme["colors"];
-  onPress: () => void;
 }
 
-const DrawerItem = ({ icon, label, color, onPress }: DrawerItemProps) => {
+type ScreenDrawerItem = BaseDrawerItem & {
+  screen: keyof HomeRoutes;
+};
+type ActionDrawerItem = BaseDrawerItem & {
+  onPress: (navigation: ReturnType<typeof useNavigation>) => void;
+};
+
+export type DrawerItemProps = ScreenDrawerItem | ActionDrawerItem;
+
+const DrawerItem = ({ icon, label, color, ...props }: DrawerItemProps) => {
   const theme = useTheme<Theme>();
+  const navigation =
+    useNavigation<DrawerNavigationProp<HomeRoutes, "OutfitIdeas">>();
 
   return (
-    <RectButton style={{ borderRadius: theme.borderRadii.m }} {...{ onPress }}>
+    <RectButton
+      style={{ borderRadius: theme.borderRadii.m }}
+      onPress={() =>
+        "screen" in props
+          ? navigation.navigate(props.screen)
+          : props.onPress(navigation)
+      }
+    >
       <Box flexDirection="row" alignItems="center" p="m">
         <RoundedIcon
           name={icon}

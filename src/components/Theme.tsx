@@ -5,6 +5,8 @@ import {
   ResponsiveValue,
 } from "@shopify/restyle";
 
+export const palette = {};
+
 const theme = createTheme({
   colors: {
     primary: "#2CB9B0",
@@ -71,7 +73,7 @@ const theme = createTheme({
     },
     button: {
       fontSize: 15,
-      fontFamily: "SFProText-Semibold",
+      fontFamily: "SFProText-Regular",
       color: "button",
     },
     defaults: {},
@@ -81,6 +83,10 @@ const theme = createTheme({
       fontFamily: "SFProText-Semibold",
       color: "secondary",
     },
+  },
+  breakpoints: {
+    phone: 0,
+    tablet: 768,
   },
 });
 

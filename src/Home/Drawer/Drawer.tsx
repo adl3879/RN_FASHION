@@ -1,9 +1,9 @@
 import { CommonActions } from "@react-navigation/native";
 import { useTheme } from "@shopify/restyle";
-import { Dimensions, Image } from "react-native";
+import { Dimensions, Image, StyleSheet } from "react-native";
 import type { HomeNavigationProps } from "../../../Routes";
 import Header from "../../components/Header";
-import { Box, Position, Text, Theme } from "../../components/Theme";
+import { Box, Text, Theme } from "../../components/Theme";
 import DrawerItem, { DrawerItemProps } from "./DrawerItem";
 
 const { width } = Dimensions.get("window");
@@ -28,8 +28,8 @@ const items: DrawerItemProps[] = [
   },
   {
     icon: "user",
-    label: "Edit Profiles",
-    screen: "EditProfiles",
+    label: "Edit Profile",
+    screen: "EditProfile",
     color: "yellow",
   },
   {
@@ -67,7 +67,7 @@ const Drawer = ({ navigation }: HomeNavigationProps<"OutfitIdeas">) => {
         <Box
           borderBottomRightRadius="xl"
           backgroundColor="secondary"
-          {...{ ...Position.absoluteFillObject }}
+          style={{ ...StyleSheet.absoluteFillObject }}
         >
           <Header
             title="MY PROFILE"
@@ -86,7 +86,7 @@ const Drawer = ({ navigation }: HomeNavigationProps<"OutfitIdeas">) => {
           borderBottomRightRadius="xl"
           justifyContent="center"
           padding="xl"
-          {...{ ...Position.absoluteFillObject }}
+          style={{ ...StyleSheet.absoluteFillObject }}
         >
           <Box
             position="absolute"

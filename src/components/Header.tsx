@@ -9,7 +9,7 @@ interface HeaderProps {
     icon: keyof typeof Icon.glyphMap;
     onPress: () => void;
   };
-  right: {
+  right?: {
     icon: keyof typeof Icon.glyphMap;
     onPress: () => void;
   };
@@ -38,12 +38,17 @@ const Header = ({ title, left, right, dark }: HeaderProps) => {
       <Text variant="header" {...{ color }}>
         {title}
       </Text>
-      <RoundedIconButton
-        name={right.icon}
-        size={25}
-        onPress={right.onPress}
-        {...{ color, backgroundColor }}
-      />
+
+      {right ? (
+        <RoundedIconButton
+          name={right.icon}
+          size={25}
+          onPress={right.onPress}
+          {...{ color, backgroundColor }}
+        />
+      ) : (
+        <Box>{/* Placeholder */}</Box>
+      )}
     </Box>
   );
 };

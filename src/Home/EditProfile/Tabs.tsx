@@ -24,11 +24,12 @@ interface TabsProps {
 const Tabs = ({ tabs, children }: TabsProps) => {
   const [selectedTab, setSelectedTab] = useState(tabs[0].id);
   const theme = useTheme<Theme>();
+  const width = wWidth - theme.spacing.xl * 2;
 
   const animatedStyle = useAnimatedStyle(() => {
     const index = tabs.findIndex((tab) => tab.id === selectedTab);
-    const width = (wWidth - theme.spacing.xl * 2) / tabs.length;
-    const position = width / 2 + width * index;
+    const w = width / tabs.length;
+    const position = w / 2 + w * index;
     const translateX = withTiming(
       interpolate(position, [0, wWidth], [0, wWidth]),
       { duration: 200 }
@@ -88,7 +89,13 @@ const Tabs = ({ tabs, children }: TabsProps) => {
       >
         {Children.map(children, (child, index) => {
           return (
-            <Box key={index} flex={1} width={wWidth} overflow="hidden">
+            <Box
+              key={index}
+              flex={1}
+              width={wWidth}
+              marginHorizontal="m"
+              overflow="hidden"
+            >
               {child}
             </Box>
           );

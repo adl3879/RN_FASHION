@@ -34,7 +34,7 @@ const EditProfile = ({ navigation }: HomeNavigationProps<"EditProfile">) => {
         <Box
           backgroundColor="white"
           borderTopLeftRadius="xl"
-          padding="xl"
+          paddingVertical="xl"
           style={{ ...StyleSheet.absoluteFillObject }}
         >
           <Box

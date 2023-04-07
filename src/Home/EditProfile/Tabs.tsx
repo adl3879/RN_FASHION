@@ -1,4 +1,3 @@
-import { useTheme } from "@shopify/restyle";
 import { Children, useState } from "react";
 import { Dimensions, TouchableOpacity } from "react-native";
 import Animated, {
@@ -6,9 +5,9 @@ import Animated, {
   useAnimatedStyle,
   withTiming,
 } from "react-native-reanimated";
-import { Box, Text, type Theme } from "../../components/Theme";
+import { Box, Text } from "../../components/Theme";
 
-const { width: wWidth } = Dimensions.get("window");
+const { width } = Dimensions.get("window");
 const AnimatedBox = Animated.createAnimatedComponent(Box);
 
 interface Tab {
@@ -23,15 +22,13 @@ interface TabsProps {
 
 const Tabs = ({ tabs, children }: TabsProps) => {
   const [selectedTab, setSelectedTab] = useState(tabs[0].id);
-  const theme = useTheme<Theme>();
-  const width = wWidth - theme.spacing.xl * 2;
 
   const animatedStyle = useAnimatedStyle(() => {
     const index = tabs.findIndex((tab) => tab.id === selectedTab);
     const w = width / tabs.length;
     const position = w / 2 + w * index;
     const translateX = withTiming(
-      interpolate(position, [0, wWidth], [0, wWidth]),
+      interpolate(position, [0, width], [0, width]),
       { duration: 200 }
     );
 
@@ -42,8 +39,8 @@ const Tabs = ({ tabs, children }: TabsProps) => {
 
   const animatedBoxStyle = useAnimatedStyle(() => {
     const index = tabs.findIndex((tab) => tab.id === selectedTab);
-    const pos = -index * wWidth;
-    const translateX = withTiming(interpolate(pos, [0, wWidth], [0, wWidth]), {
+    const pos = -index * width;
+    const translateX = withTiming(interpolate(pos, [0, width], [0, width]), {
       duration: 500,
     });
 
@@ -83,7 +80,7 @@ const Tabs = ({ tabs, children }: TabsProps) => {
         />
       </Box>
       <AnimatedBox
-        width={wWidth * tabs.length}
+        width={width * tabs.length}
         flexDirection="row"
         style={animatedBoxStyle}
       >
@@ -92,8 +89,8 @@ const Tabs = ({ tabs, children }: TabsProps) => {
             <Box
               key={index}
               flex={1}
-              width={wWidth}
-              marginHorizontal="m"
+              width={width}
+              // marginHorizontal="m"
               overflow="hidden"
             >
               {child}

@@ -1,19 +1,19 @@
+import { useTheme } from "@shopify/restyle";
 import { useState } from "react";
 import Button from "../../components/Button";
-import { Box } from "../../components/Theme";
+import { Box, type Theme } from "../../components/Theme";
 
 interface CheckBoxGroupProps {
-  options: {
-    value: string;
-    label: string;
-  }[];
+  options: { value: string; label: string }[];
+  radio?: boolean;
 }
 
-const CheckBoxGroup = ({ options }: CheckBoxGroupProps) => {
+const CheckBoxGroup = ({ options, radio }: CheckBoxGroupProps) => {
   const [selectedValues, setSelectedValues] = useState<string[]>([]);
+  const theme = useTheme<Theme>();
 
   return (
-    <Box flexDirection="row" flexWrap="wrap">
+    <Box flexDirection="row" flexWrap="wrap" marginTop="s">
       {options.map(({ label, value }) => {
         const index = selectedValues.indexOf(value);
         const isSelected = index !== -1;
@@ -24,14 +24,24 @@ const CheckBoxGroup = ({ options }: CheckBoxGroupProps) => {
             variant={isSelected ? "primary" : "default"}
             label={label}
             onPress={() => {
-              if (isSelected) {
-                selectedValues.splice(index, 1);
+              if (radio) {
+                setSelectedValues([value]);
               } else {
-                selectedValues.push(value);
+                if (isSelected) {
+                  selectedValues.splice(index, 1);
+                } else {
+                  selectedValues.push(value);
+                }
+                setSelectedValues([...selectedValues]);
               }
-              setSelectedValues([...selectedValues]);
             }}
-            style={{ width: "auto", height: "auto", padding: 14, margin: 4 }}
+            style={{
+              width: "auto",
+              height: "auto",
+              padding: 14,
+              marginBottom: theme.spacing.m,
+              marginRight: theme.spacing.s,
+            }}
           />
         );
       })}
